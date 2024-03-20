@@ -11,7 +11,7 @@ Para este trabalho utilizou-se o dataset FCSS2, mais especificamente seu subset 
 Para rodar este projeto, é necessaário python3 3.x ealgumas depenências que podem. Para instala-las automaticamente utilize o comando:
 
 ```console
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Certifique-se de ter todas as dependências instaladas antes de executar o projeto.
@@ -30,6 +30,9 @@ Certifique-se de ter todas as dependências instaladas antes de executar o proje
     ```console    
     python3 preprocess # preprocessa os dados
     ```
+- Executar MFCC ou FFT
+    - Atualmente, o modelo utiliza o MFCC. Para utilizar somente a FFT, mudar a variável 'use_mfcc' em 'Feature_extraction.py' para False
+    
 - Executar modelo
     - No momento esse script executa uma Random Forest
     ```console    

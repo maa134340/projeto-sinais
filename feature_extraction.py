@@ -4,6 +4,7 @@ import librosa
 
 class FeatureExtractor:
     def __init__(self):
+        self.use_mfcc = False
         pass
 
     def extract_mfcc(self, audio_data):
@@ -55,10 +56,13 @@ class FeatureExtractor:
 
             #extract fourirer
             fourirer = self.extract_fourirer(audio_data)
-            
-            # concatenate MFCC and zero-crossing rate features
-            combined_features = np.concatenate((mfcc_features, zero_crossing_feature, spectral_flatness_feature, spectral_centroid_feature))
 
+            if(self.use_mfcc):
+                # concatenate MFCC and zero-crossing rate features
+                combined_features = np.concatenate((mfcc_features, zero_crossing_feature, spectral_flatness_feature, spectral_centroid_feature))
+            else:
+                 # concatenate FFT and zero-crossing rate features
+                combined_features = np.concatenate((fourirer, zero_crossing_feature, spectral_flatness_feature, spectral_centroid_feature))
             # append to x and y
             x.append(combined_features)
             y.append(class_id)
