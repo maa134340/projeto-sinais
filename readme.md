@@ -31,19 +31,13 @@ Certifique-se de ter todas as dependências instaladas antes de executar o proje
     python3 visualize.py Fire # visualizar dados para fogo
     python3 visualize.py Rain # Visualizar dados para chuva
     ```
-- preprocessar audios:
-    - Esse script cria frames de 1s a partir dos audios de 5 segudos.
-    - os audios são salvos na pasta 'frames' e um novo csv 'frames.csv' é criado
-    ```console    
-    python3 preprocess # preprocessa os dados
-    ```
 - Executar MFCC ou FFT
     - Atualmente, o modelo utiliza o MFCC. Para utilizar somente a FFT, mudar a variável 'use_mfcc' em 'Feature_extraction.py' para False
 
-- Executar modelo
-    - No momento esse script executa uma Random Forest
+- Executar Projeto
+    - Esse script carrega, processa e classifica os áudios
     ```console    
-    python3 main.py # classificar dados
+    python3 main.py 
     ```
 
 
