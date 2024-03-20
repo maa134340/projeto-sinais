@@ -1,35 +1,60 @@
-# bibliotecas para processamento do sinal
+# Libraries for signal processing
 from preprocessing import Preprocess
 from feature_extraction import FeatureExtractor
 
-# bibliotecas para classificacap
-from sklearn.model_selection import train_test_split
+# Libraries for classifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-# pre-processar os arquivos de audio
+# Libraries for evaluation
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Preprocess audio files
 preprocess = Preprocess(metadata_file="metadata.csv")
 preprocess.process_audio_files()
 
-# extrair caracteristicas
+# Extract features
 feature_extractor = FeatureExtractor()
 x, y = feature_extractor.extract_features(preprocess.frames)
 
 # Split the dataset into training and testing sets
 print("Splitting dataset into training and testing sets...")
-x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
-# treinar classificador
+# Train classifier
 clf = RandomForestClassifier()
 
-# treinar classificador
+# Train classifier
 print("Training classifier...")
 clf.fit(x_train, y_train)
 
-# gerar previsoes
+# Generate predictions
 print("Predicting...")
 predictions = clf.predict(x_test)
 
+# Generate the confusion matrix
+conf_matrix = confusion_matrix(y_test, predictions)
+
+# Plot the confusion matrix
+plt.figure(figsize=(10, 8))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=preprocess.labels, yticklabels=preprocess.labels)
+plt.xlabel('Predicted Labels')
+plt.ylabel('True Labels')
+plt.title('Confusion Matrix')
+plt.show()
+
 # Evaluate the classifier
 accuracy = accuracy_score(y_test, predictions)
-print("Accuracy:", accuracy)
+precision = precision_score(y_test, predictions, average='weighted')
+recall = recall_score(y_test, predictions, average='weighted')
+f1 = f1_score(y_test, predictions, average='weighted')
+
+# print evaluation metrics
+print(f"Accuracy: {accuracy}")
+print(f"Precision: {precision}")
+print(f"Recall: {recall}")
+print(f"F1 Score: {f1}")

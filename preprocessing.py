@@ -8,6 +8,7 @@ class Preprocess:
         self.audio_dir = audio_dir
         self.frame_length = frame_length
         self.data = None
+        self.labels = []
 
     def load_metadata(self):
         self.data = pd.read_csv(self.metadata_file)
@@ -27,6 +28,7 @@ class Preprocess:
         # Load audio files
         audio_data, sample_rate = librosa.load(os.path.join(self.audio_dir, audio_file), sr= 44100)    
 
+        # Split audio into frames
         frames = self.split_audio(audio_data, class_id)
 
         return frames
@@ -37,9 +39,16 @@ class Preprocess:
 
         print("Preprocessing audio files...")
 
-        for index, row in self.data.iterrows():
+        # set labels
+        self.labels = self.data['Class Name'].unique()
+
+        for _, row in self.data.iterrows():
+
+            # extract info from csv
             dataset_file = row['Dataset File Name']
             class_id = row['Class ID']
+            
+            # actual preprocessing
             frames = self.create_frames(dataset_file, class_id)
             self.frames.extend(frames)
 
