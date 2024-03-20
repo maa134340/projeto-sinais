@@ -22,7 +22,7 @@ x, y = feature_extractor.extract_features(preprocess.frames)
 
 # Split the dataset into training and testing sets
 print("Splitting dataset into training and testing sets...")
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, shuffle=True)
 
 # Train classifier
 clf = RandomForestClassifier()
