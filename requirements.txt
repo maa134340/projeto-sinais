@@ -5,3 +5,4 @@ librosa
 pandas
 numpy
 scipy
+PyQt5
