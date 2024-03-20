@@ -18,6 +18,13 @@ Certifique-se de ter todas as dependências instaladas antes de executar o proje
 
 ## Funcionalidades
 
+- Escolher entre classes
+    - Há dois arquivos de metadados, um somente com a classe de sons ambiente ('metadata_environmental_class.csv') e outro também com a classe de ameaças para a floresta('metadata_environmental_and_threats_class.csv')
+    - Por padrão, apenas o com a classe de sons ambiente está escolhida, por causa do tempo de execução do modelo, mas é possível mudar isso no arquivo main.py
+    ```main.py    
+    preprocess = Preprocess(metadata_file="metadata_environmental_and_threats_class.csv")
+    ```
+
 - Visualizar áudio e transformada:
     - Esse script permite que você escolha uma classe para visualizar um exemplo da sua forma de áudio e sua transformada.
     ```console    
@@ -32,7 +39,7 @@ Certifique-se de ter todas as dependências instaladas antes de executar o proje
     ```
 - Executar MFCC ou FFT
     - Atualmente, o modelo utiliza o MFCC. Para utilizar somente a FFT, mudar a variável 'use_mfcc' em 'Feature_extraction.py' para False
-    
+
 - Executar modelo
     - No momento esse script executa uma Random Forest
     ```console    

@@ -35,7 +35,7 @@ def plot_audio_and_fourier(file_path):
     plt.show()
 
 # Carregar o arquivo CSV
-data = pd.read_csv("metadata.csv")
+data = pd.read_csv("metadata_environmental_and_threats_class.csv")
 
 # Função para plotar o sinal de áudio e sua Transformada de Fourier para uma determinada classe
 def plot_audio_and_fourier_for_class(data, class_name):

@@ -4,7 +4,11 @@ import librosa
 
 class FeatureExtractor:
     def __init__(self):
-        self.use_mfcc = False
+        self.use_mfcc = True
+        if(self.use_mfcc):
+            print('using MFCC.')
+        else:
+            print('using only FTT.')
         pass
 
     def extract_mfcc(self, audio_data):
