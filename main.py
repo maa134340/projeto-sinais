@@ -13,7 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Preprocess audio files
-preprocess = Preprocess(metadata_file="metadata_environmental_and_threats_class.csv")
+preprocess = Preprocess(metadata_file="metadata_environmental_class.csv")
 preprocess.process_audio_files()
 
 # Extract features
