@@ -13,17 +13,21 @@ preprocess.process_audio_files()
 
 # extrair caracteristicas
 feature_extractor = FeatureExtractor()
-x, y = feature_extractor.extract_features(preprocess.frames, preprocess.data)
+x, y = feature_extractor.extract_features(preprocess.frames)
 
 # Split the dataset into training and testing sets
+print("Splitting dataset into training and testing sets...")
 x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42)
 
 # treinar classificador
-clf = RandomForestClassifier(n_estimators=100)
+clf = RandomForestClassifier()
 
+# treinar classificador
+print("Training classifier...")
 clf.fit(x_train, y_train)
 
 # gerar previsoes
+print("Predicting...")
 predictions = clf.predict(x_test)
 
 # Evaluate the classifier

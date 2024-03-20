@@ -6,30 +6,63 @@ class FeatureExtractor:
     def __init__(self):
         pass
 
-    def extract_features(self, frames, metadata):
-        # audios = []
+    def extract_mfcc(self, audio_data):
+        mfcc_features = librosa.feature.mfcc(y=audio_data, sr=44100)
+        return mfcc_features.flatten()
+    
+    def extract_zero_crossing_rate(self, audio_data):
+        zero_crossing_rate = librosa.feature.zero_crossing_rate(y=audio_data)
+        return zero_crossing_rate.flatten()
+    
+    def extract_spectral_flatness(self, audio_data):
+        flatness = librosa.feature.spectral_flatness(y=audio_data)
+        return flatness.flatten()
 
-        # for index, row in metadata.iterrows():
-        #     class_id = row['Class ID']
-        #     audio_data = frames[index]
-        #     transformada = fft(audio_data)
-        #     audios.append((np.abs(transformada)[:20000], class_id))
+    def extract_spectral_centroid(self, audio_data):
+        centroid = librosa.feature.spectral_centroid(y=audio_data, sr = 44100)
+        return centroid.flatten()    
+    
+    def extract_fourirer(self, audio_data):
+        spectrum = np.abs(fft(audio_data))
+        return spectrum
+    
+    def extract_bpm(self, audio_data):
+        pass
 
-        # x = np.array([audio[0] for audio in audios])
-        # y = np.array([audio[1] for audio in audios])
-
-        # return x, y
+    def extract_features(self, frames):
 
         x = []
         y = []
-        
+
+        print("Extracting features...")
+
         for frame in frames:
+        
+            # unpack frame
             audio_data, class_id = frame
-            mfcc_features = librosa.feature.mfcc(y=audio_data, sr=22050)
-            mfcc_features = mfcc_features.flatten()
 
-            x.append(mfcc_features)
+            # get mfcc features
+            mfcc_features = self.extract_mfcc(audio_data)
 
-            y.append(class_id)
+            # extract zero-crossing rate feature
+            zero_crossing_feature = self.extract_zero_crossing_rate(audio_data)
+
+            # extract spectral flatness feature
+            spectral_flatness_feature = self.extract_spectral_flatness(audio_data)
+
+            # extract spectral centroid feature
+            spectral_centroid_feature = self.extract_spectral_centroid(audio_data)
+
+            #extract fourirer
+            fourirer = self.extract_fourirer(audio_data)
             
+            # concatenate MFCC and zero-crossing rate features
+            combined_features = np.concatenate((mfcc_features, zero_crossing_feature, spectral_flatness_feature, spectral_centroid_feature))
+
+            # append to x and y
+            x.append(combined_features)
+            y.append(class_id)
+
+        print("Features extraction completed.")
+        
         return x, y
