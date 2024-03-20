@@ -1,49 +1,29 @@
-import pandas as pd
-import librosa
-from scipy.fft import fft
-import matplotlib.pyplot as plt
-import numpy as np
+# bibliotecas para processamento do sinal
+from preprocessing import Preprocess
+from feature_extraction import FeatureExtractor
 
+# bibliotecas para classificacap
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
-# Load the CSV file into a DataFrame
-metadata = pd.read_csv('frames.csv')
+# pre-processar os arquivos de audio
+preprocess = Preprocess(metadata_file="metadata.csv")
+preprocess.process_audio_files()
 
-
-audios = []
-# Iterate through each row in the DataFrame
-for index, row in metadata.iterrows():
-    # Store necessary information in the dictionary
-    audio_info = {
-        'class_id': row['Class ID'],
-        'audio_file': './frames/' + row['Frame File Name'],
-        'sample_rate': librosa.get_samplerate('./frames/' + row['Frame File Name']),
-    }
-    audios.append(audio_info)
-
-x = []
-y = []
-
-# Apply Fourier transform for each audio
-for audio_info in audios:
-    audio_data, sample_rate = librosa.load(audio_info['audio_file'], sr=None)
-    transformada = fft(audio_data)
-
-    # print(len(transformada))
-    x.append(np.abs(transformada)[:20000])
-    y.append(audio_info['class_id'])
+# extrair caracteristicas
+feature_extractor = FeatureExtractor()
+x, y = feature_extractor.extract_features(preprocess.frames, preprocess.data)
 
 # Split the dataset into training and testing sets
 x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42)
 
-# Train a classifier
+# treinar classificador
 clf = RandomForestClassifier(n_estimators=100)
 
 clf.fit(x_train, y_train)
 
-# Make predictions on the testing set
+# gerar previsoes
 predictions = clf.predict(x_test)
 
 # Evaluate the classifier
